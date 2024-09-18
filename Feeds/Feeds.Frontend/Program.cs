@@ -1,3 +1,6 @@
+using Feeds.Frontend.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace Feeds.Frontend
 {
     public class Program
@@ -8,6 +11,14 @@ namespace Feeds.Frontend
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddHttpClient();
+            builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie(options =>
+           {
+               options.LoginPath = "/Login/Login";
+               options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+           });
 
             var app = builder.Build();
 
@@ -23,12 +34,12 @@ namespace Feeds.Frontend
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Login}/{action=Login}/{id?}");
 
             app.Run();
         }

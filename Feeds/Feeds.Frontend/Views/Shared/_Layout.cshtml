@@ -6,7 +6,9 @@
     <title>@ViewData["Title"] - Feeds.Frontend</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.flatly.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="~/Feeds.Frontend.styles.css" asp-append-version="true" />
+   
 </head>
 <body>
     <header>
@@ -42,7 +44,7 @@
                                         <span class="oi oi-list"></span>  Menu
                                     </a>
                                     <ul class="dropdown-menu bg-black" aria-labelledby="offcanvasNavbarDropdown">
-                                        <li><a class="dropdown-item text-white-50" asp-controller="Categorias" asp-action="Index"><span class="oi oi-list"></span>  Categorias</a></li>
+                                        <li><a class="dropdown-item text-white-50" asp-controller="Categorias" asp-action="Index"><span class="oi oi-card-checklist"></span>  Categorias</a></li>
                                         <li><a class="dropdown-item text-white-50" asp-controller="Usuarios" asp-action="Index"><span class="oi oi-person"></span>  Usuarios</a></li>
                                         <li><a class="dropdown-item text-white-50" asp-controller="Admin" asp-action="VerBitacora"><span class="oi oi-pencil"></span>  Bitacora</a></li>
                                     </ul>
@@ -51,8 +53,8 @@
                             @if (User.Identity.IsAuthenticated && User.IsInRole("Usuario"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Edit">Perfil</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index"><span class="oi oi-person"></span>Categorias</a>                                  
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Edit"><span class="oi oi-person"></span>Perfil</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index"><span class="oi oi-card-checklist"></span>Categorias</a>
                                 </li>
                             }
                         </ul>
@@ -61,18 +63,18 @@
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-white-50" asp-area="" asp-controller="Account"
-                                       asp-action="ChangeUser"><span class="oi oi-person"></span><strong>  Hola! @User.Identity.Name</strong></a>
+                                       asp-action="ChangeUser"><span class="oi oi-box-arrow-left"></span><strong>  Hola! @User.Identity.Name</strong></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white-50" asp-area="" asp-controller="Account" asp-action="Logout">
-                                        <span class="oi oi-expand-right"></span>  Cerrar Sesión
+                                        <span class="oi oi-box-arrow-left"></span>  Cerrar Sesión
                                     </a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-white-50" asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+                                    <a class="nav-link text-white-50" asp-area="" asp-controller="Account" asp-action="Login"><span class="oi oi-person"></span> Iniciar Sesión</a>
                                 </li>
                             }
 
@@ -95,6 +97,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+   
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

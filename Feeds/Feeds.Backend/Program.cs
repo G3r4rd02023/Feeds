@@ -1,3 +1,5 @@
+using Feeds.Backend.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Feeds.Backend
 {
@@ -10,6 +12,10 @@ namespace Feeds.Backend
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<DataContext>(o =>
+            {
+                o.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSQL"));
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -26,7 +32,6 @@ namespace Feeds.Backend
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

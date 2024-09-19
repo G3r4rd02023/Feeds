@@ -1,11 +1,13 @@
 ﻿using Feeds.Backend.Data;
 using Feeds.Shared.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feeds.Backend.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CategoriasController : ControllerBase
     {

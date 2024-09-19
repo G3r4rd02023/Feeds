@@ -1,11 +1,14 @@
 ﻿using Feeds.Frontend.Services;
 using Feeds.Shared.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Feeds.Frontend.Controllers
 {
+    [Authorize]
     public class CategoriasController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -20,12 +23,21 @@ namespace Feeds.Frontend.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var user = await _usuario.GetUsuarioByEmail(User.Identity!.Name!);
+            var tokenService = new ServicioToken();
+            var token = await tokenService.Autenticar(user);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetAsync("/api/Categorias");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var categorias = JsonConvert.DeserializeObject<IEnumerable<Categoria>>(content);
                 return View("Index", categorias);
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Login", "Login");
             }
             return View(new List<Categoria>());
         }
@@ -40,6 +52,10 @@ namespace Feeds.Frontend.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _usuario.GetUsuarioByEmail(User.Identity!.Name!);
+                var tokenService = new ServicioToken();
+                var token = await tokenService.Autenticar(user);
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 var json = JsonConvert.SerializeObject(categoria);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync("/api/Categorias", content);
@@ -52,12 +68,22 @@ namespace Feeds.Frontend.Controllers
                 {
                     TempData["ErrorMessage"] = "Ocurrio un error al crear la categoria";
                 }
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("Login", "Login");
+                }
             }
+
             return View(categoria);
         }
 
         public async Task<IActionResult> Edit(int id)
         {
+            var user = await _usuario.GetUsuarioByEmail(User.Identity!.Name!);
+            var tokenService = new ServicioToken();
+            var token = await tokenService.Autenticar(user);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetAsync($"/api/Categorias/{id}");
             if (!response.IsSuccessStatusCode)
             {
@@ -75,6 +101,10 @@ namespace Feeds.Frontend.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _usuario.GetUsuarioByEmail(User.Identity!.Name!);
+                var tokenService = new ServicioToken();
+                var token = await tokenService.Autenticar(user);
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 var json = JsonConvert.SerializeObject(categoria);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PutAsync($"/api/Categorias/{id}", content);
@@ -94,6 +124,10 @@ namespace Feeds.Frontend.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
+            var user = await _usuario.GetUsuarioByEmail(User.Identity!.Name!);
+            var tokenService = new ServicioToken();
+            var token = await tokenService.Autenticar(user);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.DeleteAsync($"/api/Categorias/{id}");
             if (response.IsSuccessStatusCode)
             {

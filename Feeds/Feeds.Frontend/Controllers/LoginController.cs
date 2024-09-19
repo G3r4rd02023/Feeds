@@ -52,8 +52,8 @@ namespace Feeds.Frontend.Controllers
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                    //var apiService = new ApiService();
-                    //await apiService.Autenticar(user);
+                    var servicioToken = new ServicioToken();
+                    await servicioToken.Autenticar(user);
                     return RedirectToAction("Index", "Home");
                 }
                 else

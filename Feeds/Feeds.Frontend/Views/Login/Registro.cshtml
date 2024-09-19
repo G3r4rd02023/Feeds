@@ -1,0 +1,90 @@
+﻿@model Feeds.Shared.Data.Usuario
+@{
+    ViewData["Title"] = "Registro";
+    Layout = "~/Views/Shared/ModalLayout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<html>
+<head>
+    <style>
+        body {
+            background-image: url('/images/feedsbg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ddd;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width" />
+    <title>Registrarse</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.flatly.min.css" />
+</head>
+<body>
+    <div class="container mt-5 pt-5">
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-xl-4 col-md-6">
+
+                <div class="card bg-primary">
+                    <div class="card-header d-flex justify-content-center">
+                        <img src="/images/feedsicon.png" style="width: 150px; height: auto;" />
+                    </div>
+                    <div class="card-body text-white">
+
+                        <form asp-controller="Login" asp-action="Registro" method="post" enctype="multipart/form-data">
+                            <input type="hidden" asp-for="Rol" />
+                            <input type="hidden" asp-for="FechaRegistro" />
+                            <input class="form-control mb-3" type="text" placeholder="Nombre" asp-for="Nombre" required />
+                            <input class="form-control mb-3" type="text" placeholder="Correo" asp-for="CorreoElectronico" required />
+                            <input class="form-control mb-3" type="password" placeholder="Contraseña" asp-for="Contrasena" required />
+                            <div class="form-group">                              
+                                <input type="file" class="form-control mb-3" name="file" asp-for="URLFoto">
+                            </div>
+                           
+                            <div class="d-grid gap-2 mb-3">
+                                <button class="btn btn-info" type="submit">Registrarse</button>
+                            </div>
+                           
+                            ¿Ya tienes una cuenta? <a href="@Url.Action("Login", "Login")" class="text-info text-white"> Iniciar Sesión</a>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+@if (ViewData["AlertMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            Swal.fire({
+                title: 'Error',
+                text: '@ViewData["AlertMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>
+}
+
+
+

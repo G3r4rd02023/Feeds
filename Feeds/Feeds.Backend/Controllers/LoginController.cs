@@ -1,4 +1,6 @@
 ﻿using Feeds.Backend.Data;
+using Feeds.Shared.Data;
+using Feeds.Shared.Enums;
 using Feeds.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +38,32 @@ namespace Feeds.Backend.Controllers
             }
 
             return Unauthorized(new { Message = "Inicio de sesión fallido. Usuario o contraseña incorrectos.", isSuccess = false, token = "" });
+        }
+
+        [HttpPost("Registro")]
+        public async Task<IActionResult> Registro([FromBody] Usuario usuario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            usuario.Contrasena = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasena);
+
+            var nuevoUsuario = new Usuario()
+            {
+                Contrasena = usuario.Contrasena,
+                CorreoElectronico = usuario.CorreoElectronico,
+                FechaRegistro = DateTime.Now,
+                URLFoto = usuario.URLFoto,
+                Nombre = usuario.Nombre,
+                Rol = Rol.Autor
+            };
+
+            _context.Usuarios.Add(nuevoUsuario);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Usuario registrado exitosamente." });
         }
     }
 }

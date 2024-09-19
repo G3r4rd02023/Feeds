@@ -1,3 +1,4 @@
+using CloudinaryDotNet;
 using Feeds.Frontend.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -19,6 +20,16 @@ namespace Feeds.Frontend
                options.LoginPath = "/Login/Login";
                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
            });
+
+            var cloudinaryConfig = builder.Configuration.GetSection("Cloudinary");
+
+            var cloudinary = new Cloudinary(new Account(
+             cloudinaryConfig["CloudName"],
+             cloudinaryConfig["ApiKey"],
+             cloudinaryConfig["ApiSecret"]
+             ));
+
+            builder.Services.AddSingleton(cloudinary);
 
             var app = builder.Build();
 

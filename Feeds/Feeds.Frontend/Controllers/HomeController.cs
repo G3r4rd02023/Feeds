@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 
 namespace Feeds.Frontend.Controllers
@@ -117,6 +118,57 @@ namespace Feeds.Frontend.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> AgregarComentario(int postId)
+        {
+            var user = await _usuario.GetUsuarioByEmail(User.Identity!.Name!);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var comentario = new Comentario()
+            {
+                UsuarioId = user.Id,
+                EntradaId = postId,
+                Usuario = user,
+            };
+
+            return View(comentario);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AgregarComentario(Comentario comentario)
+        {
+            if (ModelState.IsValid)
+            {
+                var posts = await _httpClient.GetAsync("/api/Posts");
+                if (posts.IsSuccessStatusCode)
+                {
+                    var postsContent = await posts.Content.ReadAsStringAsync();
+                    var entrada = JsonConvert.DeserializeObject<IEnumerable<Entrada>>(postsContent);
+                    var mypost = entrada!.FirstOrDefault(p => p.Id == comentario.EntradaId);
+                    mypost!.Comentarios.Add(comentario);
+                    var jsonComentario = JsonConvert.SerializeObject(mypost);
+                    var contentComentario = new StringContent(jsonComentario, Encoding.UTF8, "application/json");
+                    await _httpClient.PostAsync("/api/Posts", contentComentario);
+                }
+
+                var json = JsonConvert.SerializeObject(comentario);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("/api/Comentarios", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["AlertMessage"] = "Tu comentario se agrego exitosamente";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Ocurrio un error al agregar el comentario";
+                }
+            }
+            return View(comentario);
         }
 
         public IActionResult Privacy()

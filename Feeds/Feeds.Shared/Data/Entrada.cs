@@ -1,5 +1,6 @@
 ﻿using Feeds.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Feeds.Shared.Data
 {
@@ -29,6 +30,8 @@ namespace Feeds.Shared.Data
         public int CategoriaId { get; set; }
 
         public string? URLImagen { get; set; }
+
+        public int Likes { get; set; }
 
         public List<Comentario> Comentarios { get; set; } = new List<Comentario>();
     }

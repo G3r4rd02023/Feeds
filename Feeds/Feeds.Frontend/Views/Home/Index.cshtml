@@ -77,10 +77,18 @@
                         }
                     </ul>
 
-                    <a onclick="showInPopup('@Url.Action("AgregarComentario", "Home", new { postId = post.Id })', '')"
-                       class="btn btn-sm btn-primary text-white mt-3"><i class="oi oi-plus"></i> Agregar comentario</a>
+                    <div class="btn-group mt-3" role="group">
+                        <a onclick="showInPopup('@Url.Action("AgregarComentario", "Home", new { postId = post.Id })', '')"
+                           class="btn btn-primary text-white"><i class="oi oi-plus"></i> Agregar comentario</a>
 
-                    
+                        <button data-id="@post.Id" class="btn btn-danger likeItem">
+                            <i class="oi oi-heart"></i> Me gusta (@post.Likes)
+                        </button>
+                        <button data-id="@post.Id" class="btn btn-success likeItem">
+                            <i class="oi oi-comment-square"></i>  (@post.Comentarios.Count())
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -92,6 +100,29 @@
 
 @section Scripts {
     <script src="~/js/showmodal.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Detectar clic en el botón
+            $(".likeItem").click(function (e) {
+                e.preventDefault();
+
+                // Obtener el ID del post desde el botón
+                var postId = $(this).data('id');
+
+                // Hacer la llamada AJAX a la acción MeGusta
+                $.ajax({
+                    url: '@Url.Action("MeGusta", "Home")', // Ruta hacia la acción MeGusta
+                    type: 'POST',
+                    data: { id: postId }, // Datos a enviar al controlador                   
+                    error: function () {
+                        alert("Error en la solicitud.");
+                    }
+                });
+            });
+        });
+    </script>
+
 
 }
 

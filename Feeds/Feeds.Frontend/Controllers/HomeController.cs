@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text;
 
 namespace Feeds.Frontend.Controllers
@@ -176,6 +175,28 @@ namespace Feeds.Frontend.Controllers
                 }
             }
             return View(comentario);
+        }
+
+        public async Task<IActionResult> MeGusta(int id)
+        {
+            var response = await _httpClient.GetAsync($"/api/Posts/{id}");
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var post = JsonConvert.DeserializeObject<Entrada>(jsonString);
+
+            post!.Likes += 1;
+            var json = JsonConvert.SerializeObject(post);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var postResponse = await _httpClient.PutAsync($"/api/Posts/{id}", content);
+            if (postResponse.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Te ha gustado esta publicacion";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Ocurrio un error inesperado";
+                return Redirect("Index");
+            }
         }
 
         public IActionResult Privacy()

@@ -5,5 +5,7 @@
         public int Id { get; set; }
 
         public Entrada? Entrada { get; set; }
+
+        public string? URL { get; set; }
     }
 }

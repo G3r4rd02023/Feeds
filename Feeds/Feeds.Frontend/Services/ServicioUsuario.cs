@@ -18,6 +18,7 @@ namespace Feeds.Frontend.Services
             var userResponse = await _httpClient.GetAsync($"/api/Usuarios/email/{email}");
             var usuarioJson = await userResponse.Content.ReadAsStringAsync();
             var usuario = JsonConvert.DeserializeObject<Usuario>(usuarioJson);
+            Console.WriteLine(usuarioJson);
             return usuario!;
         }
     }

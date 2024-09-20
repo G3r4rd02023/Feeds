@@ -62,11 +62,11 @@
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-white-50" asp-area="" asp-controller="Account"
+                                    <a class="nav-link text-white-50" asp-area="" asp-controller="Login"
                                        asp-action="ChangeUser"><span class="oi oi-box-arrow-left"></span><strong>  Hola! @User.Identity.Name</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white-50" asp-area="" asp-controller="Account" asp-action="Logout">
+                                    <a class="nav-link text-white-50" asp-area="" asp-controller="Login" asp-action="Logout">
                                         <span class="oi oi-box-arrow-left"></span>  Cerrar Sesión
                                     </a>
                                 </li>
@@ -74,7 +74,7 @@
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-white-50" asp-area="" asp-controller="Account" asp-action="Login"><span class="oi oi-person"></span> Iniciar Sesión</a>
+                                    <a class="nav-link text-white-50" asp-area="" asp-controller="Login" asp-action="Login"><span class="oi oi-person"></span> Iniciar Sesión</a>
                                 </li>
                             }
 

@@ -22,6 +22,14 @@ namespace Feeds.Shared.Data
 
         public Usuario? Usuario { get; set; }
 
+        public int UsuarioId { get; set; }
+
         public Categoria? Categoria { get; set; }
+
+        public int CategoriaId { get; set; }
+
+        public string? URLImagen { get; set; }
+
+        public List<Comentario> Comentarios { get; set; } = new List<Comentario>();
     }
 }

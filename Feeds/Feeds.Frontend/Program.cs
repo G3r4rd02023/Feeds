@@ -14,6 +14,7 @@ namespace Feeds.Frontend
             builder.Services.AddControllersWithViews();
             builder.Services.AddHttpClient();
             builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
+            builder.Services.AddScoped<IServicioLista, ServicioLista>();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
            .AddCookie(options =>
            {

@@ -103,7 +103,7 @@ namespace Feeds.Frontend.Controllers
                 var response = await _httpClient.PostAsync("/api/Posts", content);
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["AlertMessage"] = "Tu publicacion fue realizada exitosamente";
+                    TempData["SuccessMessage"] = "Tu publicacion fue realizada exitosamente";
                     return RedirectToAction("Index");
                 }
                 else
@@ -143,9 +143,16 @@ namespace Feeds.Frontend.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _usuario.GetUsuarioByEmail(User.Identity!.Name!);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
                 var posts = await _httpClient.GetAsync("/api/Posts");
                 if (posts.IsSuccessStatusCode)
                 {
+                    comentario.Usuario = user;
                     var postsContent = await posts.Content.ReadAsStringAsync();
                     var entrada = JsonConvert.DeserializeObject<IEnumerable<Entrada>>(postsContent);
                     var mypost = entrada!.FirstOrDefault(p => p.Id == comentario.EntradaId);
@@ -160,7 +167,7 @@ namespace Feeds.Frontend.Controllers
                 var response = await _httpClient.PostAsync("/api/Comentarios", content);
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["AlertMessage"] = "Tu comentario se agrego exitosamente";
+                    TempData["SuccessMessage"] = "Tu comentario se agrego exitosamente";
                     return RedirectToAction("Index");
                 }
                 else

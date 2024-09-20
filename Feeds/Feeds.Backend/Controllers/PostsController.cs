@@ -22,6 +22,7 @@ namespace Feeds.Backend.Controllers
             return Ok(await _context.Entradas
                 .Include(e => e.Usuario)
                 .Include(e => e.Comentarios)
+                .ThenInclude(c => c.Usuario)
                 .ToListAsync());
         }
 

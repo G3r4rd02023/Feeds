@@ -20,6 +20,21 @@
     </script>
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: '@TempData["SuccessMessage"]',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+}
+
 <p>
     <a onclick="showInPopup('@Url.Action("Create", "Home", new { id = 0 })', '')"
        class="btn btn-sm btn-primary text-white mt-3"><i class="oi oi-plus"></i> Nueva Publicación</a>
@@ -41,7 +56,7 @@
                     <!-- Fecha de publicación -->
                     <p class="text-muted">@post.FechaPublicacion.ToShortTimeString()</p>
                     <!-- Autor -->
-                    <p>Autor: <strong>@post.Usuario!.Nombre</strong></p>
+                    <p>Autor: <img src="@post.Usuario!.URLFoto" style="width:30px; height:30px; border-radius:50px" /><strong> @post.Usuario!.Nombre</strong></p>
                 </div>
 
                 <!-- Columna derecha: Comentarios -->
@@ -56,7 +71,7 @@
                         @foreach (var comentario in post.Comentarios)
                         {
                             <li class="list-group-item">
-                                <strong>@comentario!.Usuario!.Nombre</strong>: @comentario.Contenido
+                                <img src="@comentario!.Usuario!.URLFoto" style="width:30px; height:30px; border-radius:50px" /><strong> @comentario!.Usuario!.Nombre</strong>: @comentario.Contenido
                                 <span class="text-muted float-right">@comentario.FechaComentario.ToShortTimeString()</span>
                             </li>
                         }

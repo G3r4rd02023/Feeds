@@ -25,6 +25,8 @@ namespace Feeds.Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync(Comentario comentario)
         {
+            var usuario = _context.Usuarios.FirstOrDefault(e => e.Id == comentario.UsuarioId);
+            comentario.Usuario = usuario;
             _context.Add(comentario);
             await _context.SaveChangesAsync();
             return Ok();

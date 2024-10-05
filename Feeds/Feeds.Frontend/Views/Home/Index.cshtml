@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Feeds.Shared.Data.Entrada>
+﻿@using Feeds.Frontend.Services
+@model PaginatedList<Feeds.Shared.Data.Entrada>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -34,6 +35,14 @@
         });
     </script>
 }
+
+<div class="mt-3">
+    <form method="get">
+    <input type="text" name="searchTerm" value="@ViewData["CurrentFilter"]" placeholder="Buscar..."  />
+        <button type="submit" class="btn btn-sm btn-success"><i class="oi oi-magnifying-glass"></i></button>
+    </form>
+</div>
+
 
 <p>
     <a onclick="showInPopup('@Url.Action("Create", "Home", new { id = 0 })', '')"
@@ -95,6 +104,23 @@
     </div>
 
 }
+
+<nav aria-label="Paginación">
+    <ul class="pagination">
+        @if (Model.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Anterior</a>
+            </li>
+        }
+        @if (Model.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Siguiente</a>
+            </li>
+        }
+    </ul>
+</nav>
 
 <partial name="_MostrarModal" />
 

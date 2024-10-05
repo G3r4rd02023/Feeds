@@ -14,13 +14,13 @@
     <header>
         <nav class="navbar navbar-light bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/images/feedsicon.png" style="width: 50px; height: auto;" /></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/images/feedsicon.png" style="width: 50px; height: auto; border-radius:50px" /></a>
                 <button class="navbar-toggler text-light bg-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="offcanvas offcanvas-start bg-primary" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title text-white-50" id="offcanvasNavbarLabel"><img src="/images/feedsicon.png" style="width: 50px; height: auto;" /></h5>
+                        <h5 class="offcanvas-title text-white-50" id="offcanvasNavbarLabel"><img src="/images/feedsicon.png" style="width: 50px; height: auto; border-radius:50px" /></h5>
                         <button type="button" class="btn btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
@@ -30,11 +30,7 @@
                                     <span class="oi oi-home"></span>  Feeds
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active text-white-50" asp-controller="Categorias" asp-action="Index">
-                                    <span class="oi oi-list"></span> Categorias
-                                </a>
-                            </li>
+                          
 
 
                             @if (User.Identity!.IsAuthenticated && User.IsInRole("Administrador"))
@@ -46,15 +42,15 @@
                                     <ul class="dropdown-menu bg-black" aria-labelledby="offcanvasNavbarDropdown">
                                         <li><a class="dropdown-item text-white-50" asp-controller="Categorias" asp-action="Index"><span class="oi oi-card-checklist"></span>  Categorias</a></li>
                                         <li><a class="dropdown-item text-white-50" asp-controller="Usuarios" asp-action="Index"><span class="oi oi-person"></span>  Usuarios</a></li>
-                                        <li><a class="dropdown-item text-white-50" asp-controller="Admin" asp-action="VerBitacora"><span class="oi oi-pencil"></span>  Bitacora</a></li>
+                                        
                                     </ul>
                                 </li>
                             }
-                            @if (User.Identity.IsAuthenticated && User.IsInRole("Usuario"))
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Autor"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Edit"><span class="oi oi-person"></span>Perfil</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index"><span class="oi oi-card-checklist"></span>Categorias</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Edit"><span class="oi oi-person"></span> Perfil</a>
+                                   
                                 </li>
                             }
                         </ul>

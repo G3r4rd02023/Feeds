@@ -28,20 +28,35 @@ namespace Feeds.Frontend.Controllers
             _cloudinary = cloudinary;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int pageNumber = 1)
         {
             var response = await _httpClient.GetAsync("/api/Posts");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var posts = JsonConvert.DeserializeObject<IEnumerable<Entrada>>(content);
-                return View("Index", posts!.OrderByDescending(p => p.FechaPublicacion));
+
+                // Filtrado
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    posts = posts!.Where(p => p.Titulo.Contains(searchTerm) || p.Contenido.Contains(searchTerm));
+                }
+
+                // Ordenar por fecha de publicación descendente
+                posts = posts!.OrderByDescending(p => p.FechaPublicacion);
+
+                // Paginación
+                int pageSize = 3; // Puedes cambiar el tamaño de página aquí
+                var paginatedPosts = PaginatedList<Entrada>.Create(posts.AsQueryable(), pageNumber, pageSize);
+
+                return View("Index", paginatedPosts);
             }
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 return RedirectToAction("Login", "Login");
             }
+
             return View(new List<Entrada>());
         }
 
